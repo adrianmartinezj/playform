@@ -35,6 +35,12 @@ public class PlayerController : MonoBehaviour
 
     CameraState m_TargetCameraState;
     CameraState m_InterpolatingCameraState;
+    [Header("Translation Settings")]
+    [Tooltip("Controls the jump force")]
+    public float jumpForce = 2.0f;
+
+    [Tooltip("Controls the height of jump")]
+    public Vector3 jump = new Vector3(0, 2.0f, 0);
 
     [Header("Rotation Settings")]
     [Tooltip("X = Change in mouse position.\nY = Multiplicative factor for camera rotation.")]
@@ -52,6 +58,13 @@ public class PlayerController : MonoBehaviour
 
     // Private variables
     private float m_MovementSpeed = 5.0f;
+    private bool m_IsJumping = false;
+    private Rigidbody m_RigidBody;
+
+    private void Awake()
+    {
+        m_RigidBody = GetComponent<Rigidbody>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -88,14 +101,26 @@ public class PlayerController : MonoBehaviour
     {
         // Determine mouse rotation
         GetInputRotation();
+        // Determine jumping
+        GetInputJump();
         // Determine player mesh movement
         Vector3 translation = GetInputTranslationDirection() * Time.deltaTime;
         translation *= m_MovementSpeed;
-        // Rodrigues' Rotation formula -- TODO fix this shit
-        //translation = (translation * (Mathf.Cos(m_InterpolatingCameraState.yaw))) 
-        //    + (Vector3.Cross(Vector3.up, translation) * Mathf.Sin(m_InterpolatingCameraState.yaw)) 
-        //    + ((Vector3.up * Vector3.Dot(Vector3.up, translation)) * (1 - Mathf.Cos(m_InterpolatingCameraState.yaw)));
         gameObject.transform.Translate(translation);
+    }
+
+    private void GetInputJump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && !m_IsJumping)
+        {
+            m_IsJumping = true;
+            m_RigidBody.AddForce(jump * jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    void OnCollisionStay()
+    {
+        m_IsJumping = false;
     }
 
     private void GetInputRotation()
