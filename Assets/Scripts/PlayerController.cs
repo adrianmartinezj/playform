@@ -52,9 +52,18 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Time it takes to interpolate camera rotation 99% of the way to the target."), Range(0.001f, 1f)]
     public float rotationLerpTime = 0.01f;
 
+    [Tooltip("Time it takes to interpolate player movement direction to rotate."), Range(0.001f, 1f)]
+    public float movementLerpTime = 0.1f;
+    [Tooltip("Percentage of rotation to complete after time period."), Range(0.01f, 1f)]
+    public float movementLerpBasePcnt = 0.75f;
+
     [Header("Camera Settings")]
     [Tooltip("BoomArm component")]
     public GameObject BoomArm;
+
+    [Header("Mesh Settings")]
+    [Tooltip("MeshObject component")]
+    public GameObject MeshObject;
 
     // Private variables
     private float m_MovementSpeed = 5.0f;
@@ -69,7 +78,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnEnable()
@@ -104,9 +113,31 @@ public class PlayerController : MonoBehaviour
         // Determine jumping
         GetInputJump();
         // Determine player mesh movement
-        Vector3 translation = GetInputTranslationDirection() * Time.deltaTime;
+        Vector3 translateDir = GetInputTranslationDirection();
+        if (translateDir.sqrMagnitude != 0)
+            ApplyMovementDirectionLerp(translateDir);
+        Vector3 translation = translateDir * Time.deltaTime;
         translation *= m_MovementSpeed;
         gameObject.transform.Translate(translation);
+    }
+
+    private void ApplyMovementDirectionLerp(Vector3 targetDir)
+    {
+        Vector3 curDir = MeshObject.transform.forward;
+        curDir.y = 0;
+        float movementLerpPcnt = 1f - Mathf.Exp((Mathf.Log(1f - movementLerpBasePcnt) / movementLerpTime) * Time.deltaTime);
+        float newDirX = Mathf.Lerp(curDir.x, targetDir.x, movementLerpPcnt);
+        float newDirZ = Mathf.Lerp(curDir.z, targetDir.z, movementLerpPcnt);
+        Vector3 newDir = new Vector3(newDirX, 0, newDirZ);
+        float angle = AngleSigned(curDir, newDir, MeshObject.transform.up);
+        MeshObject.transform.Rotate(MeshObject.transform.up, angle);
+    }
+
+    public static float AngleSigned(Vector3 from, Vector3 to, Vector3 normal)
+    {
+        return Mathf.Atan2(
+            Vector3.Dot(normal, Vector3.Cross(from, to)),
+            Vector3.Dot(from, to)) * Mathf.Rad2Deg;
     }
 
     private void GetInputJump()
@@ -118,7 +149,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnCollisionStay()
+    void OnCollisionStay(Collision collision)
     {
         m_IsJumping = false;
     }
