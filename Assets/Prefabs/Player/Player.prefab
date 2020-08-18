@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4172920554640422273}
   - component: {fileID: 4172920554640422270}
   - component: {fileID: 709445735383437426}
-  - component: {fileID: 9025815577268986895}
+  - component: {fileID: 5641617607601568181}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -58,7 +58,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4172920554640422267}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.23614031, y: 1, z: -0.79939765}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4172920554393405133}
@@ -126,8 +126,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &9025815577268986895
-BoxCollider:
+--- !u!136 &5641617607601568181
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -136,9 +136,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Radius: 0.31
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.93, z: 0}
 --- !u!1 &4172920555083698915
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +221,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4172920554640422273}
     m_Modifications:
+    - target: {fileID: -6057140222963153312, guid: 04174abc40338a8498f22f04741692f3,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a009efbc145768e43a84eb1cf368e4f1, type: 2}
     - target: {fileID: -4216859302048453862, guid: 04174abc40338a8498f22f04741692f3,
         type: 3}
       propertyPath: m_LocalPosition.x

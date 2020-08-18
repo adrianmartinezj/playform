@@ -65,14 +65,20 @@ public class PlayerController : MonoBehaviour
     [Tooltip("MeshObject component")]
     public GameObject MeshObject;
 
+    //[Header("Animation Settings")]
+    //[Tooltip("Controls the walking animation state")]
+    //public bool
+
     // Private variables
     private float m_MovementSpeed = 5.0f;
     private bool m_IsJumping = false;
     private Rigidbody m_RigidBody;
+    private Animator m_Animator;
 
     private void Awake()
     {
         m_RigidBody = GetComponent<Rigidbody>();
+        m_Animator = MeshObject.GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -115,7 +121,15 @@ public class PlayerController : MonoBehaviour
         // Determine player mesh movement
         Vector3 translateDir = GetInputTranslationDirection();
         if (translateDir.sqrMagnitude != 0)
+        {
             ApplyMovementDirectionLerp(translateDir);
+            // Also set the walking animation value to true
+            m_Animator.SetBool("IsWalking", true);
+        }
+        else
+        {
+            m_Animator.SetBool("IsWalking", false);
+        }
         Vector3 translation = translateDir * Time.deltaTime;
         translation *= m_MovementSpeed;
         gameObject.transform.Translate(translation);
