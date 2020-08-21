@@ -98,6 +98,20 @@ public class PlayerController : MonoBehaviour
     {
         CheckExit();
         GetPlayerMovement();
+        GetPlayerAttack();
+    }
+
+    private void GetPlayerAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            m_Animator.SetBool("IsSwinging", true);
+            //m_Animator.GetCurrentAnimatorClipInfo(1).Length
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            m_Animator.SetBool("IsSwinging", false);
+        }
     }
 
     private void CheckExit()
