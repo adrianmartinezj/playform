@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
     // Private variables
     private float m_MovementSpeed = 5.0f;
     private bool m_IsJumping = false;
+    private bool m_IsFalling = false;
     private Rigidbody m_RigidBody;
     private Animator m_Animator;
 
@@ -84,7 +85,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnEnable()
@@ -105,8 +106,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            m_Animator.SetLayerWeight(1, 1);
             m_Animator.SetBool("IsSwinging", true);
-            //m_Animator.GetCurrentAnimatorClipInfo(1).Length
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
@@ -170,16 +171,23 @@ public class PlayerController : MonoBehaviour
 
     private void GetInputJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !m_IsJumping)
+        if (Input.GetKeyDown(KeyCode.Space) && !m_IsFalling && !m_IsJumping)
         {
+            m_Animator.SetLayerWeight(1, 0);
             m_IsJumping = true;
+            m_IsFalling = true;
+            m_Animator.SetBool("IsJumping", m_IsJumping);
+            m_Animator.SetBool("IsFalling", m_IsFalling);
             m_RigidBody.AddForce(jump * jumpForce, ForceMode.Impulse);
         }
     }
 
-    void OnCollisionStay(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
+        m_IsFalling = false;
         m_IsJumping = false;
+        m_Animator.SetBool("IsJumping", m_IsJumping);
+        m_Animator.SetBool("IsFalling", m_IsFalling);
     }
 
     private void GetInputRotation()
