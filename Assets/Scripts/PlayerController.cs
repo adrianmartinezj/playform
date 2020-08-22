@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Actor
 {
     class CameraState
     {
@@ -75,11 +75,26 @@ public class PlayerController : MonoBehaviour
     private bool m_IsFalling = false;
     private Rigidbody m_RigidBody;
     private Animator m_Animator;
+    
+    private void Init()
+    {
+        // Grab component references
+        m_RigidBody = GetComponent<Rigidbody>();
+        m_Animator = MeshObject.GetComponent<Animator>();
+
+        // Bind events
+        ActiveCollidersChanged += new Action(UpdateFalling);
+    }
+
+    private void UpdateFalling()
+    {
+        m_IsFalling = !IsInCollision;
+        m_Animator.SetBool("IsFalling", m_IsFalling);
+    }
 
     private void Awake()
     {
-        m_RigidBody = GetComponent<Rigidbody>();
-        m_Animator = MeshObject.GetComponent<Animator>();
+        Init();
     }
 
     // Start is called before the first frame update
@@ -100,6 +115,11 @@ public class PlayerController : MonoBehaviour
         CheckExit();
         GetPlayerMovement();
         GetPlayerAttack();
+    }
+
+    private void FixedUpdate()
+    {
+        
     }
 
     private void GetPlayerAttack()
@@ -175,19 +195,16 @@ public class PlayerController : MonoBehaviour
         {
             m_Animator.SetLayerWeight(1, 0);
             m_IsJumping = true;
-            m_IsFalling = true;
             m_Animator.SetBool("IsJumping", m_IsJumping);
-            m_Animator.SetBool("IsFalling", m_IsFalling);
             m_RigidBody.AddForce(jump * jumpForce, ForceMode.Impulse);
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    protected override void OnCollisionEnter(Collision collision)
     {
-        m_IsFalling = false;
+        base.OnCollisionEnter(collision);
         m_IsJumping = false;
         m_Animator.SetBool("IsJumping", m_IsJumping);
-        m_Animator.SetBool("IsFalling", m_IsFalling);
     }
 
     private void GetInputRotation()
