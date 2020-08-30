@@ -25,4 +25,14 @@ public class PropDamageable : Damageable
             damage.DealDamage(this);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Damage damage = other.gameObject.GetComponent<Damage>();
+        if (damage)
+        {
+            Debug.Log("Interacted with damage source " + other.gameObject);
+            damage.DealDamage(this);
+        }
+    }
 }

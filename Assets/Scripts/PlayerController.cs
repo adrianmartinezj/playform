@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Actor
 {
     class CameraState
     {
@@ -65,20 +65,42 @@ public class PlayerController : MonoBehaviour
     [Tooltip("MeshObject component")]
     public GameObject MeshObject;
 
-    //[Header("Animation Settings")]
-    //[Tooltip("Controls the walking animation state")]
-    //public bool
+    [Header("Item Slots")]
+    [Tooltip("Right Hand")]
+    public GameObject RightHand;
+    [Tooltip("Left Hand")]
+    public GameObject LeftHand;
+    [Tooltip("Back")]
+    public GameObject Back;
 
     // Private variables
     private float m_MovementSpeed = 5.0f;
     private bool m_IsJumping = false;
+    private bool m_IsFalling = false;
     private Rigidbody m_RigidBody;
     private Animator m_Animator;
+    private Dictionary<Slot, GameObject> ItemSlotMap = new Dictionary<Slot, GameObject>();
+    
+
+    private void Init()
+    {
+        // Grab component references
+        m_RigidBody = GetComponent<Rigidbody>();
+        m_Animator = MeshObject.GetComponent<Animator>();
+
+        // Bind events
+        ActiveCollidersChanged += new Action(UpdateFalling);
+    }
+
+    private void UpdateFalling()
+    {
+        m_IsFalling = !IsInCollision;
+        m_Animator.SetBool("IsFalling", m_IsFalling);
+    }
 
     private void Awake()
     {
-        m_RigidBody = GetComponent<Rigidbody>();
-        m_Animator = MeshObject.GetComponent<Animator>();
+        Init();
     }
 
     // Start is called before the first frame update
@@ -101,12 +123,17 @@ public class PlayerController : MonoBehaviour
         GetPlayerAttack();
     }
 
+    private void FixedUpdate()
+    {
+        
+    }
+
     private void GetPlayerAttack()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            m_Animator.SetLayerWeight(1, 1);
             m_Animator.SetBool("IsSwinging", true);
-            //m_Animator.GetCurrentAnimatorClipInfo(1).Length
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
@@ -170,16 +197,20 @@ public class PlayerController : MonoBehaviour
 
     private void GetInputJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !m_IsJumping)
+        if (Input.GetKeyDown(KeyCode.Space) && !m_IsFalling && !m_IsJumping)
         {
+            m_Animator.SetLayerWeight(1, 0);
             m_IsJumping = true;
+            m_Animator.SetBool("IsJumping", m_IsJumping);
             m_RigidBody.AddForce(jump * jumpForce, ForceMode.Impulse);
         }
     }
 
-    void OnCollisionStay(Collision collision)
+    protected override void OnCollisionEnter(Collision collision)
     {
+        base.OnCollisionEnter(collision);
         m_IsJumping = false;
+        m_Animator.SetBool("IsJumping", m_IsJumping);
     }
 
     private void GetInputRotation()
@@ -221,5 +252,45 @@ public class PlayerController : MonoBehaviour
         direction.y = 0;
         direction.Normalize();
         return direction;
+    }
+
+    public bool EquipItem(GameObject item)
+    {
+        Equippable equip = item.GetComponent<Equippable>();
+        // No component, no good
+        if (!equip) return false;
+
+        // Cleanup already equipped item
+        GameObject val;
+        if (ItemSlotMap.TryGetValue(equip.ItemSlot, out val))
+        {
+            ItemSlotMap.Remove(equip.ItemSlot);
+            Destroy(val);
+        }
+
+        // Get correct slot object and attach it
+        ItemSlotMap.Add(equip.ItemSlot, item);
+        GameObject slotObject;
+        switch(equip.ItemSlot)
+        {
+            case Slot.rightHand:
+                slotObject = RightHand;
+                break;
+            case Slot.leftHand:
+                slotObject = LeftHand;
+                break;
+            case Slot.back:
+                slotObject = Back;
+                break;
+            default:
+                Debug.LogError("[PlayerController] EquipItem, there is no corresponding item slot.");
+                return false;
+        }
+        // ... attach it ...
+        item.transform.parent = slotObject.transform;
+        item.transform.localPosition = equip.PickPosition;
+        item.transform.localRotation = Quaternion.Euler(equip.PickRotation);
+
+        return true;
     }
 }
