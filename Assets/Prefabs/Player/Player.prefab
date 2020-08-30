@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5641617607601568181}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,6 +110,9 @@ MonoBehaviour:
   movementLerpBasePcnt: 0.75
   BoomArm: {fileID: 4172920554393405130}
   MeshObject: {fileID: 7214576784307705300}
+  RightHand: {fileID: 2183359674612268657}
+  LeftHand: {fileID: 1669993639771890295}
+  Back: {fileID: 4802651451407708734}
 --- !u!54 &709445735383437426
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -297,6 +300,24 @@ GameObject:
 --- !u!4 &5927874573975824327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 04174abc40338a8498f22f04741692f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1674985336725277917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4802651451407708734 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6167904293427101411, guid: 04174abc40338a8498f22f04741692f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1674985336725277917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1669993639771890295 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -9217817218132447574, guid: 04174abc40338a8498f22f04741692f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1674985336725277917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2183359674612268657 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8542655298583481684, guid: 04174abc40338a8498f22f04741692f3,
     type: 3}
   m_PrefabInstance: {fileID: 1674985336725277917}
   m_PrefabAsset: {fileID: 0}

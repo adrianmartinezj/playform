@@ -65,9 +65,13 @@ public class PlayerController : Actor
     [Tooltip("MeshObject component")]
     public GameObject MeshObject;
 
-    //[Header("Animation Settings")]
-    //[Tooltip("Controls the walking animation state")]
-    //public bool
+    [Header("Item Slots")]
+    [Tooltip("Right Hand")]
+    public GameObject RightHand;
+    [Tooltip("Left Hand")]
+    public GameObject LeftHand;
+    [Tooltip("Back")]
+    public GameObject Back;
 
     // Private variables
     private float m_MovementSpeed = 5.0f;
@@ -75,7 +79,9 @@ public class PlayerController : Actor
     private bool m_IsFalling = false;
     private Rigidbody m_RigidBody;
     private Animator m_Animator;
+    private Dictionary<Slot, GameObject> ItemSlotMap = new Dictionary<Slot, GameObject>();
     
+
     private void Init()
     {
         // Grab component references
@@ -100,7 +106,7 @@ public class PlayerController : Actor
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnEnable()
@@ -246,5 +252,45 @@ public class PlayerController : Actor
         direction.y = 0;
         direction.Normalize();
         return direction;
+    }
+
+    public bool EquipItem(GameObject item)
+    {
+        Equippable equip = item.GetComponent<Equippable>();
+        // No component, no good
+        if (!equip) return false;
+
+        // Cleanup already equipped item
+        GameObject val;
+        if (ItemSlotMap.TryGetValue(equip.ItemSlot, out val))
+        {
+            ItemSlotMap.Remove(equip.ItemSlot);
+            Destroy(val);
+        }
+
+        // Get correct slot object and attach it
+        ItemSlotMap.Add(equip.ItemSlot, item);
+        GameObject slotObject;
+        switch(equip.ItemSlot)
+        {
+            case Slot.rightHand:
+                slotObject = RightHand;
+                break;
+            case Slot.leftHand:
+                slotObject = LeftHand;
+                break;
+            case Slot.back:
+                slotObject = Back;
+                break;
+            default:
+                Debug.LogError("[PlayerController] EquipItem, there is no corresponding item slot.");
+                return false;
+        }
+        // ... attach it ...
+        item.transform.parent = slotObject.transform;
+        item.transform.localPosition = equip.PickPosition;
+        item.transform.localRotation = Quaternion.Euler(equip.PickRotation);
+
+        return true;
     }
 }
