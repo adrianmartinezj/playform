@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 4681686625824900266}
   - component: {fileID: 1929886710378997605}
   - component: {fileID: 3113977095467400288}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sledge_LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,3 +251,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f720733520dfa844c8e0edc66dd8f5ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Dmg: 1
