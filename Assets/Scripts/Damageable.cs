@@ -18,7 +18,7 @@ public abstract class Damageable : MonoBehaviour
         Debug.Log("Health now at " + Health);
         if (Health <= 0)
         {
-            Debug.Log("Blegh, i ded");
+            Debug.Log(this + " died.");
             Death?.Invoke();
             OnDeath();
         }

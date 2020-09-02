@@ -66,11 +66,11 @@ public class PlayerController : Actor
     public GameObject MeshObject;
 
     [Header("Item Slots")]
-    [Tooltip("Right Hand")]
+    [Tooltip("The bone which serves as the root for the right hand slot.")]
     public GameObject RightHand;
-    [Tooltip("Left Hand")]
+    [Tooltip("The bone which serves as the root for the left hand slot.")]
     public GameObject LeftHand;
-    [Tooltip("Back")]
+    [Tooltip("The bone which serves as the root for the back slot.")]
     public GameObject Back;
 
     // Private variables
