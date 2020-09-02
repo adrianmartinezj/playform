@@ -14,7 +14,7 @@ public class PhysicsDamage : Damage
     }
     private void FixedUpdate()
     {
-        m_DmgMultiplier = m_RigidBody.velocity.magnitude;
+        m_DmgMultiplier = m_RigidBody.velocity.magnitude * m_RigidBody.mass;
     }
 
     public override void DealDamage(Damageable obj)
