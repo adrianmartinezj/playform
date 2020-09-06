@@ -13,19 +13,13 @@ public abstract class Damageable : MonoBehaviour
 
     public virtual void OnDamage(float dmg)
     {
-        Debug.Log("Took " + dmg + " damage");
         Health -= dmg;
-        Debug.Log("Health now at " + Health);
         if (Health <= 0)
         {
-            Debug.Log(this + " died.");
             Death?.Invoke();
             OnDeath();
         }
     }
 
-    public virtual void OnDeath()
-    {
-        Destroy(gameObject);
-    }
+    public abstract void OnDeath();
 }

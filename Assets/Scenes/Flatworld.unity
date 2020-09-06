@@ -268,6 +268,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 66e9fbd81d2709a4e91fb0d586f2691b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66e9fbd81d2709a4e91fb0d586f2691b, type: 3}
 --- !u!1 &1002546843 stripped
@@ -477,6 +482,30 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 956238332}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1576589048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576589047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01560c8354d80774290a720a16cd95ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetIndex: 0
+  targetVertex: {x: 0, y: 0, z: 0}
+  originalVertices: []
+  modifiedVertices: []
+  normals: []
+  isMeshReady: 0
+  showTransformHandle: 1
+  selectedIndices: 
+  pickSize: 0.01
+  radiusOfEffect: 0.003
+  pullValue: -3
+  duration: 0.1
 --- !u!64 &1576589051
 MeshCollider:
   m_ObjectHideFlags: 0

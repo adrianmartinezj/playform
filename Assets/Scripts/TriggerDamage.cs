@@ -6,6 +6,7 @@ using UnityEngine;
 public class TriggerDamage : Damage
 {
     private Collider m_Collider;
+
     private GameObject m_otherObj;
     private void Awake()
     {
@@ -14,23 +15,10 @@ public class TriggerDamage : Damage
             m_Collider.isTrigger = true;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log(this + " collided with : " + other.gameObject);
-    //    m_otherObj = other.gameObject;
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    m_otherObj = null;
-    //}
-
-    public override void DealDamage(Damageable obj)
+    public override bool DealDamage(Damageable obj)
     {
-        //if (!m_otherObj) return;
+        if (!obj) return false;
         obj.OnDamage(Dmg);
-        //Debug.Log("Dealing " + (m_DmgMultiplier * Dmg) + " damage to " + obj);
-        //obj.OnDamage(Dmg * m_DmgMultiplier);
-        Debug.Log("Dealing " + Dmg + " damage to : " + obj + "\nAt hp : " + obj.Health);
+        return true;
     }
 }
