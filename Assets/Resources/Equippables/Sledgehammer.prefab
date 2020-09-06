@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 5700696414974192212}
   - component: {fileID: 4681686625824900266}
   - component: {fileID: 1929886710378997605}
-  - component: {fileID: 3113977095467400288}
+  - component: {fileID: 7017368715459032151}
   m_Layer: 9
   m_Name: Sledge_LP
   m_TagString: Untagged
@@ -217,7 +217,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6997051083779783643}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.0130285
   m_Height: 0.001
@@ -239,7 +239,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &3113977095467400288
+--- !u!114 &7017368715459032151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6997051083779783643}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f720733520dfa844c8e0edc66dd8f5ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 631941304a6513d4dac5fe3ffb76d339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Dmg: 1

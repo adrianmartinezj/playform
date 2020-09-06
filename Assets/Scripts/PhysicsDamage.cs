@@ -17,7 +17,7 @@ public class PhysicsDamage : Damage
         m_DmgMultiplier = m_RigidBody.velocity.magnitude * m_RigidBody.mass;
     }
 
-    public override void DealDamage(Damageable obj)
+    public override bool DealDamage(Damageable obj)
     {
         float potentialDmg = m_DmgMultiplier * Dmg;
         // Round damage to two decimals to prevent this from going cray cray
@@ -26,7 +26,8 @@ public class PhysicsDamage : Damage
         Debug.Log("Dealing " + potentialDmg + " damage to " + obj);
 
         // Let's not deal with super small damage...
-        if (potentialDmg < .01) return;
+        if (potentialDmg < .01) return false;
         obj.OnDamage(potentialDmg);
+        return true;
     }
 }
