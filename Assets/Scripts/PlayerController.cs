@@ -108,7 +108,7 @@ public class PlayerController : Actor
     // Start is called before the first frame update
     void Start()
     {
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnEnable()
@@ -132,8 +132,12 @@ public class PlayerController : Actor
 
     public void UpdateAbility(Ability newAbility)
     {
+        if (m_CurrentAbility)
+        {
+            m_CurrentAbility.Unequipped();
+        }
         m_CurrentAbility = newAbility;
-        newAbility.Equipped(this);
+        newAbility?.Equipped(this);
     }
 
     private void GetPlayerInput()

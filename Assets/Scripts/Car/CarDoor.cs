@@ -8,21 +8,34 @@ public class CarDoor : Interactable
     {
         OnPlayerEnter += CarDoor_OnPlayerEnter;
         OnPlayerExit += CarDoor_OnPlayerExit;
-        OnUse += CarDoor_OnUse;
-    }
-
-    private void CarDoor_OnUse()
-    {
-        Debug.Log("CarDoor_OnUse");
     }
 
     private void CarDoor_OnPlayerExit(GameObject player)
     {
         Debug.Log("CarDoor_OnPlayerExit");
+        player.GetComponent<PlayerController>().UpdateAbility(null);
     }
 
     private void CarDoor_OnPlayerEnter(GameObject player)
     {
         Debug.Log("CarDoor_OnPlayerEnter");
+        player.GetComponent<PlayerController>().UpdateAbility(this);
+    }
+
+    public override void BeginUse(PlayerController player)
+    {
+        if (!InUse)
+        {
+            Debug.Log("Opening car door...");
+            StartCoroutine(WaitForCarDoor());
+        }
+    }
+
+    IEnumerator WaitForCarDoor()
+    {
+        InUse = true;
+        yield return new WaitForSeconds(1.5f);
+        InUse = false;
+        Debug.Log("Car door has been opened.");
     }
 }

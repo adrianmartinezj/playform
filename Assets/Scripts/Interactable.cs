@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
-public abstract class Interactable : MonoBehaviour
+public abstract class Interactable : Ability
 {
     // ---- Public ----
     public const string PLAYER_TAG = "Player";
+    public bool InUse = false;
     // ---- Protected ----
     protected delegate void PlayerEvent(GameObject player);
     protected event PlayerEvent OnPlayerEnter;
     protected event PlayerEvent OnPlayerExit;
-    protected event Action OnUse;
     // ---- Private ----
     private bool m_InRange = false;
     private Collider m_Collider;
@@ -42,8 +42,4 @@ public abstract class Interactable : MonoBehaviour
         }
     }
 
-    public void Use()
-    {
-        OnUse?.Invoke();
-    }
 }

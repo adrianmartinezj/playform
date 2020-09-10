@@ -14,11 +14,6 @@ public class Melee : Ability
 
     }
 
-    public override void Equipped(PlayerController player)
-    {
-        
-    }
-
     public override void BeginUse(PlayerController player)
     {
         player.Animator.SetLayerWeight(1, 1);
@@ -29,4 +24,5 @@ public class Melee : Ability
     {
         player.Animator.SetBool("IsSwinging", false);
     }
+
 }

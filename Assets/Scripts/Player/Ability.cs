@@ -7,15 +7,24 @@ public enum EPlayerMode
     OneHand,
     TwoHand,
     Magic,
-    Unarmed
+    Unarmed,
+    Misc
 };
 
 public abstract class Ability : MonoBehaviour
 {
     public string Name;
     public EPlayerMode Mode;
+    public Sprite Icon;
 
-    public abstract void Equipped(PlayerController player);
-    public abstract void BeginUse(PlayerController player);
-    public abstract void EndUse(PlayerController player);
+    public virtual void Equipped(PlayerController player)
+    {
+        HUDController.Instance.UpdateIcon(this.Icon);
+    }
+    public virtual void Unequipped()
+    {
+        HUDController.Instance.ClearIcon();
+    }
+    public virtual void BeginUse(PlayerController player) { }
+    public virtual void EndUse(PlayerController player) { }
 }
