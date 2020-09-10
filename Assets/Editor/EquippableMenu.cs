@@ -40,9 +40,12 @@ public class EquippableMenu : EditorWindow
         GUILayout.Label("Weapons", EditorStyles.label);
         if(GUILayout.Button("Sledgehammer"))
         {
-            GameObject sledgehammer = (GameObject)Resources.Load(SLEDGEHAMMER_PATH);
-            Debug.Log("Loaded : " + sledgehammer);
-            EquipItem(sledgehammer);
+            if (Application.isPlaying)
+            {
+                GameObject sledgehammer = (GameObject)Resources.Load(SLEDGEHAMMER_PATH);
+                Debug.Log("Loaded : " + sledgehammer);
+                EquipItem(sledgehammer);
+            }
         }
     }
 
@@ -55,5 +58,6 @@ public class EquippableMenu : EditorWindow
         if (!pc) return;
 
         pc.EquipItem(Instantiate(obj));
+        pc.UpdateAbility(obj.GetComponent<Ability>());
     }
 }

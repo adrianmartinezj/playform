@@ -78,8 +78,10 @@ public class PlayerController : Actor
     private bool m_IsJumping = false;
     private bool m_IsFalling = false;
     private Rigidbody m_RigidBody;
+    public Animator Animator { get { return m_Animator; } }
     private Animator m_Animator;
     private Dictionary<Slot, GameObject> ItemSlotMap = new Dictionary<Slot, GameObject>();
+    private Ability m_CurrentAbility;
     
 
     private void Init()
@@ -120,7 +122,7 @@ public class PlayerController : Actor
     {
         CheckExit();
         GetPlayerMovement();
-        GetPlayerAttack();
+        GetPlayerInput();
     }
 
     private void FixedUpdate()
@@ -128,16 +130,22 @@ public class PlayerController : Actor
         
     }
 
-    private void GetPlayerAttack()
+    public void UpdateAbility(Ability newAbility)
+    {
+        m_CurrentAbility = newAbility;
+        newAbility.Equipped(this);
+    }
+
+    private void GetPlayerInput()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            m_Animator.SetLayerWeight(1, 1);
-            m_Animator.SetBool("IsSwinging", true);
+            m_CurrentAbility?.BeginUse(this);
+            
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            m_Animator.SetBool("IsSwinging", false);
+            m_CurrentAbility?.EndUse(this);
         }
     }
 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3775652164921934947}
   - component: {fileID: 491331041704303496}
+  - component: {fileID: 2716054312634975229}
   m_Layer: 0
   m_Name: Sledgehammer
   m_TagString: Untagged
@@ -48,6 +49,20 @@ MonoBehaviour:
   PickPosition: {x: 0.116, y: -0.013, z: 0.311}
   PickRotation: {x: 10.047, y: 271.321, z: 270.701}
   ItemSlot: 0
+--- !u!114 &2716054312634975229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161732092362602096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f08b8112aad5d1a4eb76c4496d1dcabe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Sledgehammer
+  Mode: 0
 --- !u!1 &1417256885837779394
 GameObject:
   m_ObjectHideFlags: 0
